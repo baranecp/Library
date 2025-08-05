@@ -59,20 +59,15 @@ function addBookToLibrary(title, author, readValue) {
   myLibrary.push(book);
 }
 
-function displayBooks() {
-  document.querySelector(".books").innerHTML = myLibrary
-    .map(
-      (book) =>
-        `
-        <div class="book" data-id=${book.id}>
-            <h3>${book.title}</h3>
-            <p>${book.author}</p>
-            <p class="read-toggle" data-id=${book.id}>${book.readStatus}</p>
-            <a class="remove">X</a>
-        </div>
-        `
-    )
-    .join("");
+function appendBookToDOM(book) {
+  const bookHTML = `
+    <div class="book" data-id="${book.id}">
+      <h3>${book.title}</h3>
+      <p>${book.author}</p>
+      <p class="read-toggle" data-id="${book.id}">${book.readStatus}</p>
+      <a class="remove">X</a>
+    </div>`;
+  document.querySelector(".books").insertAdjacentHTML("beforeend", bookHTML);
 }
 
 showBtn.addEventListener("click", () => dialog.showModal());
@@ -92,10 +87,9 @@ form.addEventListener("submit", (e) => {
 
   const isRead = readValue === "Read";
   addBookToLibrary(title, author, isRead);
-
+  appendBookToDOM(myLibrary.at(-1));
   dialog.close();
   form.reset();
-  displayBooks();
 });
 
 //Handle remove
