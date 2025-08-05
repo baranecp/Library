@@ -101,11 +101,12 @@ form.addEventListener("submit", (e) => {
 //Handle remove
 document.querySelector(".books").addEventListener("click", (e) => {
   if (e.target.classList.contains("remove")) {
-    const bookId = e.target.closest(".book").dataset.id;
+    const bookDiv = e.target.closest(".book");
+    const bookId = bookDiv.dataset.id;
     const index = myLibrary.findIndex((book) => book.id === bookId);
     if (index !== -1) {
       myLibrary.splice(index, 1);
-      displayBooks();
+      bookDiv.remove();
     }
   }
 
