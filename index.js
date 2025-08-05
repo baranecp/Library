@@ -116,7 +116,7 @@ document.querySelector(".books").addEventListener("click", (e) => {
     const book = myLibrary.find((book) => book.id === bookId);
     if (book) {
       book.toggleRead();
-      displayBooks();
+      e.target.textContent = book.readStatus;
     }
   }
 });
