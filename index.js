@@ -5,10 +5,10 @@ const closeBtn = document.getElementById("close-dialog");
 const form = dialog.querySelector("form");
 
 class Book {
-  constructor(title, author, read, id) {
+  constructor(title, author, isRead, id) {
     this.title = title;
     this.author = author;
-    this.read = read;
+    this.isRead = isRead;
     this.id = id;
   }
 
@@ -28,7 +28,7 @@ class Book {
     }
   }
 
-  set read(newIsRead) {
+  set isRead(newIsRead) {
     this._isRead = Boolean(newIsRead);
   }
 
@@ -40,18 +40,22 @@ class Book {
     return this._author;
   }
 
-  get read() {
+  get isRead() {
     return this._isRead;
   }
 
+  get readStatus() {
+    return this._isRead ? "Read" : "Not read yet";
+  }
+
   toggleRead() {
-    this.read = !this.read;
+    this._isRead = !this._isRead;
   }
 }
 
-function addBookToLibrary(title, author, read) {
+function addBookToLibrary(title, author, readValue) {
   const id = crypto.randomUUID();
-  const book = new Book(title, author, read, id);
+  const book = new Book(title, author, readValue, id);
   myLibrary.push(book);
 }
 
@@ -63,7 +67,7 @@ function displayBooks() {
         <div class="book" data-id=${book.id}>
             <h3>${book.title}</h3>
             <p>${book.author}</p>
-            <p class="read-toggle">${book.read ? "Read" : "Not read yet"}</p>
+            <p class="read-toggle" data-id=${book.id}>${book.readStatus}</p>
             <a class="remove">X</a>
         </div>
         `
@@ -84,9 +88,10 @@ form.addEventListener("submit", (e) => {
 
   const title = form.querySelector("#title").value.trim();
   const author = form.querySelector("#author").value.trim();
-  const read = form.querySelector("#read").value;
+  const readValue = form.querySelector("#read").value;
 
-  addBookToLibrary(title, author, read);
+  const isRead = readValue === "Read";
+  addBookToLibrary(title, author, isRead);
 
   dialog.close();
   form.reset();
